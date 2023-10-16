@@ -6,11 +6,27 @@ import { TopPageModule } from './top-page/top-page.module';
 import { ProductModule } from './product/product.module';
 import { ReviewModule } from './review/review.module';
 import { RoomModule } from './room/room.module';
-import { ЕшtimetableModule } from './ешtimetable/ешtimetable.module';
+import { TimetableModule } from './timetable/timetable.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { getMongoConfig } from './configs/mongo.config';
 
 @Module({
-  imports: [AuthModule, TopPageModule, ProductModule, ReviewModule, RoomModule, ЕшtimetableModule],
-  controllers: [AppController],
-  providers: [AppService],
+	imports: [
+		ConfigModule.forRoot(),
+		MongooseModule.forRootAsync({
+			imports: [ConfigModule],
+			inject: [ConfigService],
+			useFactory: getMongoConfig,
+		}),
+		AuthModule,
+		TopPageModule,
+		ProductModule,
+		ReviewModule,
+		RoomModule,
+		TimetableModule,
+	],
+	controllers: [AppController],
+	providers: [AppService],
 })
 export class AppModule {}

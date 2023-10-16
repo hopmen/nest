@@ -1,14 +1,16 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { AuthDto } from './dto/auth.dto';
+import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
+	constructor(private service: AuthService) {}
 	@Post(`register`)
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	async register(@Body() dto: AuthDto) {}
+	async register(@Body() dto: AuthDto) {
+		return await this.service.create(dto);
+	}
 
 	@HttpCode(200)
 	@Post(`login`)
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	async login(@Body() dto: AuthDto) {}
 }
